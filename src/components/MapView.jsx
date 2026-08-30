@@ -20,7 +20,10 @@ function MapView({ onGenerate3D }) {
     <MapContainer
       center={[10.79025, 78.70495]}
       zoom={18}
-      style={{ height: "100%", width: "100%" }}
+      style={{
+        height: "700px",
+        width: "100%",
+      }}
     >
 
       <TileLayer
@@ -28,24 +31,37 @@ function MapView({ onGenerate3D }) {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
-      <Polygon positions={parcelCoordinates}>
+      <Polygon
+        positions={parcelCoordinates}
+        pathOptions={{
+          color: "#2563eb",
+          weight: 3,
+          fillColor: "#3b82f6",
+          fillOpacity: 0.25,
+        }}
+      >
 
         <Popup>
 
           <div>
 
-            <h3>Parcel Information</h3>
+            <h3>
+              Parcel Information
+            </h3>
 
             <p>
-              <strong>Parcel ID:</strong> TN-TRI-001
+              <strong>Parcel ID:</strong>
+              {" "}TN-TRI-001
             </p>
 
             <p>
-              <strong>Area:</strong> 2500 sq.ft
+              <strong>Area:</strong>
+              {" "}2500 sq.ft
             </p>
 
             <p>
-              <strong>Building:</strong> B01
+              <strong>Building:</strong>
+              {" "}B01
             </p>
 
             <button
@@ -57,6 +73,7 @@ function MapView({ onGenerate3D }) {
                 border: "none",
                 borderRadius: "6px",
                 cursor: "pointer",
+                fontWeight: "bold",
               }}
             >
               Generate 3D Property

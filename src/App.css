@@ -4,111 +4,201 @@
 
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f6f8;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f1f5f9;
+  color: #1e293b;
 }
 
 .app {
   min-height: 100vh;
 }
 
+/* ============================= */
+/* HEADER */
+/* ============================= */
+
 header {
-  background: #111827;
+  background: #0f172a;
   color: white;
-  padding: 20px 40px;
+  text-align: center;
+  padding: 25px 20px;
 }
 
 header h1 {
   margin: 0;
-  font-size: 28px;
+  font-size: 32px;
 }
 
 header p {
-  margin: 6px 0 0;
-  color: #cbd5e1;
+  margin-top: 8px;
+  font-size: 18px;
+  color: #bfdbfe;
 }
+
+/* ============================= */
+/* MAIN */
+/* ============================= */
 
 main {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  height: calc(100vh - 100px);
+  min-height: 700px;
 }
 
+/* ============================= */
+/* VIEWER */
+/* ============================= */
+
 .viewer {
-  background: #e5e7eb;
+  min-height: 700px;
+  background: #e2e8f0;
+  position: relative;
+  overflow: hidden;
 }
+
+.viewer canvas {
+  width: 100% !important;
+  height: 700px !important;
+}
+
+/* ============================= */
+/* PANEL */
+/* ============================= */
 
 .panel {
   background: white;
-  padding: 30px;
-  border-left: 1px solid #ddd;
+  padding: 25px;
+  overflow-y: auto;
+  max-height: 700px;
 }
 
 .panel h2 {
+  color: #334155;
   margin-top: 0;
+  margin-bottom: 20px;
 }
 
+/* ============================= */
+/* SEARCH */
+/* ============================= */
+
+.search-box {
+  background: #f8fafc;
+  border: 2px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 25px;
+}
+
+.search-box h2 {
+  color: #334155;
+  font-size: 21px;
+  margin-bottom: 15px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #94a3b8;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #1e293b;
+  background: white;
+  margin-bottom: 10px;
+}
+
+.search-box input::placeholder {
+  color: #64748b;
+}
+
+.search-button {
+  width: 100%;
+  padding: 11px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background: #1d4ed8;
+}
+
+.search-message {
+  margin-top: 12px;
+  color: #15803d;
+  font-size: 14px;
+}
+
+/* ============================= */
+/* PROPERTY INFO */
+/* ============================= */
+
 .info {
-  margin-top: 25px;
+  display: grid;
+  gap: 14px;
+  margin-bottom: 20px;
 }
 
 .info p {
   background: #f8fafc;
-  padding: 14px;
-  border-radius: 8px;
-  margin-bottom: 12px;
+  border-radius: 12px;
+  padding: 18px;
+  margin: 0;
+  text-align: center;
+  border: 1px solid #e2e8f0;
 }
 
 .info strong {
-  color: #475569;
-}
-
-.ulpin {
-  margin-top: 25px;
-  padding: 18px;
-  background: #eef2ff;
-  border-radius: 10px;
-}
-
-.ulpin h3 {
-  margin-top: 0;
-}
-
-.ulpin code {
   display: block;
-  background: white;
-  padding: 12px;
-  border-radius: 6px;
-  font-size: 14px;
-  word-break: break-all;
+  color: #334155;
+  font-size: 17px;
+  margin-bottom: 7px;
 }
 
-.hint {
-  margin-top: 25px;
+.info p br + * {
   color: #64748b;
 }
+
+/* ============================= */
+/* UNIT SECTION */
+/* ============================= */
+
 .unit-section {
-  margin-top: 20px;
+  background: #f8fafc;
+  padding: 18px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #e2e8f0;
+}
+
+.unit-section strong {
+  color: #334155;
+  font-size: 17px;
 }
 
 .unit-buttons {
   display: flex;
   gap: 10px;
-  margin-top: 10px;
   flex-wrap: wrap;
+  margin-top: 12px;
 }
 
 .unit-button {
   padding: 10px 18px;
-  border: 1px solid #cbd5e1;
+  border: 2px solid #cbd5e1;
+  border-radius: 8px;
   background: white;
-  border-radius: 6px;
+  color: #334155;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: bold;
 }
 
 .unit-button:hover {
-  background: #e2e8f0;
+  border-color: #2563eb;
 }
 
 .unit-button.active {
@@ -116,34 +206,145 @@ main {
   color: white;
   border-color: #2563eb;
 }
+
+/* ============================= */
+/* ULPIN */
+/* ============================= */
+
 .ulpin {
-  margin-top: 25px;
-  padding: 20px;
-  background: #eef2ff;
+  background: #eff6ff;
   border: 2px solid #6366f1;
-  border-radius: 12px;
+  border-radius: 14px;
+  padding: 20px;
+  text-align: center;
+  margin-top: 20px;
 }
 
 .ulpin h3 {
-  margin-top: 0;
-  margin-bottom: 15px;
   color: #3730a3;
-  font-size: 18px;
+  margin-top: 0;
+  font-size: 20px;
 }
 
 .ulpin-value {
   background: white;
   border: 1px solid #c7d2fe;
-  padding: 15px;
-  border-radius: 8px;
-  font-size: 18px;
+  border-radius: 9px;
+  padding: 14px 8px;
+  color: #334155;
+  font-size: 16px;
   font-weight: bold;
-  font-family: monospace;
   word-break: break-all;
 }
 
 .ulpin p {
-  margin-bottom: 0;
   color: #64748b;
-  font-size: 13px;
+  font-size: 14px;
+}
+
+/* ============================= */
+/* HINT */
+/* ============================= */
+
+.hint {
+  text-align: center;
+  color: #475569;
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 20px 0;
+}
+
+/* ============================= */
+/* BACK BUTTON */
+/* ============================= */
+
+.back-button {
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 9px;
+  background: #475569;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.back-button:hover {
+  background: #334155;
+}
+
+/* ============================= */
+/* RESPONSIVE */
+/* ============================= */
+
+@media (max-width: 900px) {
+
+  main {
+    grid-template-columns: 1fr;
+  }
+
+  .viewer {
+    min-height: 550px;
+  }
+
+  .viewer canvas {
+    height: 550px !important;
+  }
+
+  .panel {
+    max-height: none;
+  }
+
+}
+.map-only-view {
+  width: 100%;
+  height: 700px;
+  background: #e2e8f0;
+}
+/* ============================= */
+/* FLOOR SELECTOR */
+/* ============================= */
+
+.floor-section {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 20px;
+}
+
+.floor-section strong {
+  display: block;
+  color: #334155;
+  font-size: 17px;
+  margin-bottom: 12px;
+}
+
+.floor-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.floor-button {
+  padding: 12px 8px;
+  border: 2px solid #cbd5e1;
+  border-radius: 8px;
+  background: white;
+  color: #334155;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.floor-button:hover {
+  border-color: #2563eb;
+}
+
+.floor-button.active {
+  background: #2563eb;
+  color: white;
+  border-color: #2563eb;
 }

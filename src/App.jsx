@@ -7,18 +7,15 @@ import Building3D from "./components/Building3D";
 
 import "./App.css";
 
-// ===============================
-// PROPERTY DATA
-// ===============================
+// ==========================================
+// FLOOR + UNIT DATA
+// ==========================================
 
 const floors = [
   {
     id: "F00",
     name: "Ground Floor",
     usage: "Commercial",
-
-    color: "#f59e0b",
-
     units: [
       {
         id: "U01",
@@ -37,9 +34,6 @@ const floors = [
     id: "F01",
     name: "1st Floor",
     usage: "Commercial",
-
-    color: "#22c55e",
-
     units: [
       {
         id: "U01",
@@ -63,9 +57,6 @@ const floors = [
     id: "F02",
     name: "2nd Floor",
     usage: "Office",
-
-    color: "#3b82f6",
-
     units: [
       {
         id: "U01",
@@ -84,9 +75,6 @@ const floors = [
     id: "F03",
     name: "3rd Floor",
     usage: "Residential",
-
-    color: "#8b5cf6",
-
     units: [
       {
         id: "U01",
@@ -103,69 +91,222 @@ const floors = [
 ];
 
 
-// ===============================
-// MAIN APP
-// ===============================
+// ==========================================
+// DEFAULT VALUES
+// ==========================================
+
+const defaultFloor = floors[0];
+const defaultUnit = floors[0].units[0];
+
+
+// ==========================================
+// APP
+// ==========================================
 
 function App() {
 
-  // Map / 3D state
+  // ========================================
+  // VIEW STATE
+  // ========================================
 
   const [show3D, setShow3D] = useState(false);
 
-  // Selected floor
+
+  // ========================================
+  // SELECTED FLOOR
+  // ========================================
 
   const [selectedFloor, setSelectedFloor] =
-    useState(floors[0]);
+    useState(defaultFloor);
 
-  // Selected unit
+
+  // ========================================
+  // SELECTED UNIT
+  // ========================================
 
   const [selectedUnit, setSelectedUnit] =
-    useState(floors[0].units[0]);
+    useState(defaultUnit);
 
 
-  // ===============================
-  // FLOOR SELECTION
-  // ===============================
+  // ========================================
+  // SEARCH
+  // ========================================
+
+  const [searchULPIN, setSearchULPIN] =
+    useState("");
+
+  const [searchMessage, setSearchMessage] =
+    useState("");
+
+
+  // ========================================
+  // FLOOR SELECT
+  // ========================================
 
   const handleFloorSelect = (floor) => {
 
     setSelectedFloor(floor);
 
-    // Automatically select first unit
-    // of selected floor
-
     setSelectedUnit(floor.units[0]);
+
+    setSearchMessage("");
   };
 
 
-  // ===============================
-  // UNIT SELECTION
-  // ===============================
+  // ========================================
+  // UNIT SELECT
+  // ========================================
 
   const handleUnitSelect = (floor, unit) => {
 
     setSelectedFloor(floor);
 
     setSelectedUnit(unit);
+
+    setSearchMessage("");
   };
 
 
-  // ===============================
-  // ULPIN GENERATION
-  // ===============================
+  // ========================================
+  // VERTICAL ULPIN
+  // ========================================
 
   const ulpin =
     `TN-TRI-001-B01-${selectedFloor.id}-${selectedUnit.id}`;
 
 
+  // ========================================
+  // SEARCH ULPIN
+  // ========================================
+
+  const handleSearchULPIN = () => {
+
+    const value =
+      searchULPIN.trim().toUpperCase();
+
+
+    if (!value) {
+
+      setSearchMessage(
+        "Please enter a ULPIN."
+      );
+
+      return;
+    }
+
+
+    const parts = value.split("-");
+
+
+    if (parts.length !== 6) {
+
+      setSearchMessage(
+        "Invalid ULPIN format."
+      );
+
+      return;
+    }
+
+
+    const floorId = parts[4];
+
+    const unitId = parts[5];
+
+
+    // Find floor
+
+    const foundFloor =
+      floors.find(
+        (floor) =>
+          floor.id === floorId
+      );
+
+
+    if (!foundFloor) {
+
+      setSearchMessage(
+        "Floor not found."
+      );
+
+      return;
+    }
+
+
+    // Find unit
+
+    const foundUnit =
+      foundFloor.units.find(
+        (unit) =>
+          unit.id === unitId
+      );
+
+
+    if (!foundUnit) {
+
+      setSearchMessage(
+        "Unit not found."
+      );
+
+      return;
+    }
+
+
+    // Select property
+
+    setSelectedFloor(foundFloor);
+
+    setSelectedUnit(foundUnit);
+
+
+    // Open 3D view
+
+    setShow3D(true);
+
+
+    setSearchMessage(
+      `Property found: ${foundFloor.name} - ${foundUnit.id}`
+    );
+  };
+
+
+  // ========================================
+  // BACK TO MAP
+  // ========================================
+
+  const handleBackToMap = () => {
+
+    // Hide 3D
+
+    setShow3D(false);
+
+
+    // Reset selection
+
+    setSelectedFloor(defaultFloor);
+
+    setSelectedUnit(defaultUnit);
+
+
+    // Clear search
+
+    setSearchULPIN("");
+
+    setSearchMessage("");
+  };
+
+
+  // ========================================
+  // RETURN UI
+  // ========================================
+
   return (
 
     <div className="app">
 
-      {/* =============================== */}
+
+      {/* ================================== */}
       {/* HEADER */}
-      {/* =============================== */}
+      {/* ================================== */}
 
       <header>
 
@@ -180,52 +321,51 @@ function App() {
       </header>
 
 
-      {/* =============================== */}
-      {/* MAIN CONTENT */}
-      {/* =============================== */}
+      {/* ================================== */}
+      {/* MAP VIEW */}
+      {/* ================================== */}
 
-      <main>
+      {!show3D && (
 
+        <section
+          className="map-only-view"
+        >
 
-        {/* =============================== */}
-        {/* MAP / 3D VIEW */}
-        {/* =============================== */}
+          <MapView
+            onGenerate3D={() => {
 
-        <section className="viewer">
+              setShow3D(true);
 
+            }}
+          />
 
-          {/* =============================== */}
-          {/* MAP VIEW */}
-          {/* =============================== */}
+        </section>
 
-          {!show3D && (
-
-            <MapView
-              onGenerate3D={() => {
-                setShow3D(true);
-              }}
-            />
-
-          )}
+      )}
 
 
-          {/* =============================== */}
-          {/* 3D VIEW */}
-          {/* =============================== */}
+      {/* ================================== */}
+      {/* 3D VIEW */}
+      {/* ================================== */}
 
-          {show3D && (
+      {show3D && (
+
+        <main>
+
+
+          {/* ================================ */}
+          {/* 3D BUILDING */}
+          {/* ================================ */}
+
+          <section className="viewer">
 
             <Canvas
               camera={{
                 position: [8, 6, 9],
                 fov: 45,
               }}
-
               shadows
             >
-
-
-              {/* LIGHT */}
 
               <ambientLight
                 intensity={0.7}
@@ -238,10 +378,6 @@ function App() {
                 castShadow
               />
 
-
-              {/* =============================== */}
-              {/* BUILDING */}
-              {/* =============================== */}
 
               <Building3D
 
@@ -266,25 +402,13 @@ function App() {
               />
 
 
-              {/* =============================== */}
-              {/* CAMERA CONTROL */}
-              {/* =============================== */}
-
               <OrbitControls />
 
-
-              {/* =============================== */}
-              {/* GROUND GRID */}
-              {/* =============================== */}
 
               <gridHelper
                 args={[12, 12]}
               />
 
-
-              {/* =============================== */}
-              {/* GROUND PLANE */}
-              {/* =============================== */}
 
               <mesh
                 rotation={[
@@ -313,252 +437,334 @@ function App() {
 
             </Canvas>
 
-          )}
-
-        </section>
+          </section>
 
 
-        {/* =============================== */}
-        {/* PROPERTY INFORMATION */}
-        {/* =============================== */}
+          {/* ================================ */}
+          {/* DETAILS PANEL */}
+          {/* ================================ */}
 
-        <section className="panel">
-
-
-          <h2>
-            Property Details
-          </h2>
+          <section className="panel">
 
 
-          {/* PARCEL */}
+            {/* ============================= */}
+            {/* SEARCH */}
+            {/* ============================= */}
 
-          <div className="info">
+            <div className="search-box">
 
-            <p>
-
-              <strong>
-                Parcel ID
-              </strong>
-
-              <br />
-
-              TN-TRI-001
-
-            </p>
+              <h2>
+                🔎 Search Vertical ULPIN
+              </h2>
 
 
-            {/* BUILDING */}
+              <input
 
-            <p>
+                type="text"
 
-              <strong>
-                Building ID
-              </strong>
+                value={searchULPIN}
 
-              <br />
+                onChange={(e) =>
+                  setSearchULPIN(
+                    e.target.value
+                  )
+                }
 
-              B01
+                placeholder="TN-TRI-001-B01-F01-U03"
 
-            </p>
-
-
-            {/* FLOOR */}
-
-            <p>
-
-              <strong>
-                Selected Floor
-              </strong>
-
-              <br />
-
-              {selectedFloor.name}
-
-            </p>
+              />
 
 
-            {/* USAGE */}
+              <button
+                className="search-button"
+                onClick={
+                  handleSearchULPIN
+                }
+              >
 
-            <p>
+                Search ULPIN
 
-              <strong>
-                Floor Usage
-              </strong>
-
-              <br />
-
-              {selectedFloor.usage}
-
-            </p>
+              </button>
 
 
-          </div>
+              {searchMessage && (
 
+                <p className="search-message">
 
-          {/* =============================== */}
-          {/* UNIT SELECTION */}
-          {/* =============================== */}
+                  {searchMessage}
 
-          <div className="unit-section">
+                </p>
 
-            <strong>
-              Select Unit
-            </strong>
-
-
-            <div className="unit-buttons">
-
-              {selectedFloor.units.map(
-                (unit) => (
-
-                  <button
-
-                    key={unit.id}
-
-                    onClick={() =>
-                      handleUnitSelect(
-                        selectedFloor,
-                        unit
-                      )
-                    }
-
-                    className={
-                      selectedUnit.id === unit.id
-                        ? "unit-button active"
-                        : "unit-button"
-                    }
-
-                  >
-
-                    {unit.id}
-
-                  </button>
-
-                )
               )}
 
             </div>
 
-          </div>
+
+            {/* ============================= */}
+            {/* PROPERTY DETAILS */}
+            {/* ============================= */}
+
+            <h2>
+              Property Details
+            </h2>
 
 
-          {/* =============================== */}
-          {/* SELECTED UNIT DETAILS */}
-          {/* =============================== */}
+            {/* PARCEL */}
 
-          <div className="info">
+            <div className="info">
+
+              <p>
+
+                <strong>
+                  Parcel ID
+                </strong>
+
+                <br />
+
+                TN-TRI-001
+
+              </p>
 
 
-            <p>
+              {/* BUILDING */}
+
+              <p>
+
+                <strong>
+                  Building ID
+                </strong>
+
+                <br />
+
+                B01
+
+              </p>
+
+
+              {/* FLOOR */}
+
+              <p>
+
+                <strong>
+                  Selected Floor
+                </strong>
+
+                <br />
+
+                {selectedFloor.name}
+
+              </p>
+
+
+              {/* FLOOR USAGE */}
+
+              <p>
+
+                <strong>
+                  Floor Usage
+                </strong>
+
+                <br />
+
+                {selectedFloor.usage}
+
+              </p>
+
+            </div>
+            {/* ================================= */}
+{/* FLOOR SELECTOR */}
+{/* ================================= */}
+
+<div className="floor-section">
+
+  <strong>
+    Select Floor
+  </strong>
+
+  <div className="floor-buttons">
+
+    {floors.map((floor) => (
+
+      <button
+        key={floor.id}
+        onClick={() =>
+          handleFloorSelect(floor)
+        }
+        className={
+          selectedFloor.id === floor.id
+            ? "floor-button active"
+            : "floor-button"
+        }
+      >
+
+        {floor.name}
+
+      </button>
+
+    ))}
+
+  </div>
+
+</div>
+
+
+            {/* ============================= */}
+            {/* UNIT SELECTION */}
+            {/* ============================= */}
+
+            <div className="unit-section">
 
               <strong>
-                Selected Unit
+                Select Unit
               </strong>
 
-              <br />
 
-              {selectedUnit.id}
+              <div className="unit-buttons">
 
-            </p>
+                {selectedFloor.units.map(
+                  (unit) => (
 
+                    <button
 
-            <p>
+                      key={unit.id}
 
-              <strong>
-                Property Type
-              </strong>
+                      onClick={() =>
+                        handleUnitSelect(
+                          selectedFloor,
+                          unit
+                        )
+                      }
 
-              <br />
+                      className={
+                        selectedUnit.id === unit.id
+                          ? "unit-button active"
+                          : "unit-button"
+                      }
 
-              {selectedUnit.usage}
+                    >
 
-            </p>
+                      {unit.id}
 
+                    </button>
 
-            <p>
+                  )
+                )}
 
-              <strong>
-                Area
-              </strong>
-
-              <br />
-
-              {selectedUnit.area} sq.ft
-
-            </p>
-
-
-          </div>
-
-
-          {/* =============================== */}
-          {/* ULPIN */}
-          {/* =============================== */}
-
-          <div className="ulpin">
-
-            <h3>
-              🔑 Vertical ULPIN
-            </h3>
-
-
-            <div className="ulpin-value">
-
-              {ulpin}
+              </div>
 
             </div>
 
 
-            <p>
+            {/* ============================= */}
+            {/* UNIT DETAILS */}
+            {/* ============================= */}
 
-              Unique identifier for
-              this vertical property
+            <div className="info">
+
+              <p>
+
+                <strong>
+                  Selected Unit
+                </strong>
+
+                <br />
+
+                {selectedUnit.id}
+
+              </p>
+
+
+              <p>
+
+                <strong>
+                  Property Type
+                </strong>
+
+                <br />
+
+                {selectedUnit.usage}
+
+              </p>
+
+
+              <p>
+
+                <strong>
+                  Area
+                </strong>
+
+                <br />
+
+                {selectedUnit.area} sq.ft
+
+              </p>
+
+            </div>
+
+
+            {/* ============================= */}
+            {/* VERTICAL ULPIN */}
+            {/* ============================= */}
+
+            <div className="ulpin">
+
+              <h3>
+                🔑 Vertical ULPIN
+              </h3>
+
+
+              <div className="ulpin-value">
+
+                {ulpin}
+
+              </div>
+
+
+              <p>
+                Unique identifier for this
+                vertical property
+              </p>
+
+            </div>
+
+
+            {/* ============================= */}
+            {/* HINT */}
+            {/* ============================= */}
+
+            <p className="hint">
+
+              💡 Click a floor or unit directly
+              in the 3D building.
 
             </p>
 
-          </div>
 
-
-          {/* =============================== */}
-          {/* HELP TEXT */}
-          {/* =============================== */}
-
-          <p className="hint">
-
-            💡 Click a floor or unit
-            directly in the 3D building.
-
-          </p>
-
-
-          {/* =============================== */}
-          {/* BACK TO MAP */}
-          {/* =============================== */}
-
-          {show3D && (
+            {/* ============================= */}
+            {/* BACK TO MAP */}
+            {/* ============================= */}
 
             <button
               className="back-button"
-              onClick={() => {
-                setShow3D(false);
-              }}
+              onClick={
+                handleBackToMap
+              }
             >
 
               ← Back to Map
 
             </button>
 
-          )}
 
+          </section>
 
-        </section>
+        </main>
 
-      </main>
+      )}
 
     </div>
 
   );
 }
-
 
 export default App;
