@@ -1,0 +1,149 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+}
+
+.app {
+  min-height: 100vh;
+}
+
+header {
+  background: #111827;
+  color: white;
+  padding: 20px 40px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+header p {
+  margin: 6px 0 0;
+  color: #cbd5e1;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  height: calc(100vh - 100px);
+}
+
+.viewer {
+  background: #e5e7eb;
+}
+
+.panel {
+  background: white;
+  padding: 30px;
+  border-left: 1px solid #ddd;
+}
+
+.panel h2 {
+  margin-top: 0;
+}
+
+.info {
+  margin-top: 25px;
+}
+
+.info p {
+  background: #f8fafc;
+  padding: 14px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.info strong {
+  color: #475569;
+}
+
+.ulpin {
+  margin-top: 25px;
+  padding: 18px;
+  background: #eef2ff;
+  border-radius: 10px;
+}
+
+.ulpin h3 {
+  margin-top: 0;
+}
+
+.ulpin code {
+  display: block;
+  background: white;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  word-break: break-all;
+}
+
+.hint {
+  margin-top: 25px;
+  color: #64748b;
+}
+.unit-section {
+  margin-top: 20px;
+}
+
+.unit-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.unit-button {
+  padding: 10px 18px;
+  border: 1px solid #cbd5e1;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.unit-button:hover {
+  background: #e2e8f0;
+}
+
+.unit-button.active {
+  background: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+.ulpin {
+  margin-top: 25px;
+  padding: 20px;
+  background: #eef2ff;
+  border: 2px solid #6366f1;
+  border-radius: 12px;
+}
+
+.ulpin h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #3730a3;
+  font-size: 18px;
+}
+
+.ulpin-value {
+  background: white;
+  border: 1px solid #c7d2fe;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: monospace;
+  word-break: break-all;
+}
+
+.ulpin p {
+  margin-bottom: 0;
+  color: #64748b;
+  font-size: 13px;
+}
